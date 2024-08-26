@@ -38,7 +38,10 @@ from .anymal_b.anymal_b_config import AnymalBRoughCfg, AnymalBRoughCfgPPO
 from .cassie.cassie import Cassie
 from .cassie.cassie_config import CassieRoughCfg, CassieRoughCfgPPO
 from .a1.a1_config import A1RoughCfg, A1RoughCfgPPO
-
+from .g1.g1 import G1
+from .g1.g1_config import G1RoughCfg, G1RoughCfgPPO
+from .wow.zerohand_config import ZerohandRoughCfg, ZerohandRoughCfgPPO
+from .wow.zerohand import Zerohand
 
 import os
 
@@ -49,3 +52,5 @@ task_registry.register( "anymal_c_flat", Anymal, AnymalCFlatCfg(), AnymalCFlatCf
 task_registry.register( "anymal_b", Anymal, AnymalBRoughCfg(), AnymalBRoughCfgPPO() )
 task_registry.register( "a1", LeggedRobot, A1RoughCfg(), A1RoughCfgPPO() )
 task_registry.register( "cassie", Cassie, CassieRoughCfg(), CassieRoughCfgPPO() )
+task_registry.register( "g1", G1, G1RoughCfg(), G1RoughCfgPPO() )
+task_registry.register( "zerohand", Zerohand, ZerohandRoughCfg(), ZerohandRoughCfgPPO() )

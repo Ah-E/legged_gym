@@ -39,6 +39,8 @@ class LeggedRobotCfg(BaseConfig):
         env_spacing = 3.  # not used with heightfields/trimeshes 
         send_timeouts = True # send time out information to the algorithm
         episode_length_s = 20 # episode length in seconds
+        randomize_start_pos = False
+        randomize_start_yaw = False
 
     class terrain:
         mesh_type = 'trimesh' # "heightfield" # none, plane, heightfield or trimesh
@@ -58,8 +60,8 @@ class LeggedRobotCfg(BaseConfig):
         max_init_terrain_level = 5 # starting curriculum state
         terrain_length = 8.
         terrain_width = 8.
-        num_rows= 10 # number of terrain rows (levels)
-        num_cols = 20 # number of terrain cols (types)
+        num_rows= 6 # number of terrain rows (levels)
+        num_cols = 6# number of terrain cols (types)
         # terrain types: [smooth slope, rough slope, stairs up, stairs down, discrete]
         terrain_proportions = [0.1, 0.1, 0.35, 0.25, 0.2]
         # trimesh only:
@@ -120,12 +122,28 @@ class LeggedRobotCfg(BaseConfig):
 
     class domain_rand:
         randomize_friction = True
-        friction_range = [0.5, 1.25]
-        randomize_base_mass = False
-        added_mass_range = [-1., 1.]
+        friction_range = [0.6, 2.]
+
+        randomize_base_mass = True
+        added_mass_range = [0., 3.]
+
+        randomize_base_com = True
+        added_com_range = [-0.2, 0.2]
+
         push_robots = True
-        push_interval_s = 15
-        max_push_vel_xy = 1.
+        push_interval_s = 8
+        max_push_vel_xy = 0.5
+
+        randomize_motor = True
+        motor_strength_range = [0.8, 1.2]
+
+        # delay_update_global_steps = 24 * 8000
+        delay_update_global_steps = 24 * 1000
+        action_delay = False
+        action_curr_step = [1, 1]
+        action_curr_step_scratch = [0, 1]
+        action_delay_view = 1
+        action_buf_len = 8
 
     class rewards:
         class scales:
