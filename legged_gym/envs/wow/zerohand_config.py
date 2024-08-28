@@ -99,20 +99,20 @@ class ZerohandRoughCfg( LeggedRobotCfg ):
         control_type = 'P' # P: position, V: velocity, T: torques
         # PD Drive parameters:
         stiffness = {   
-                        'left_shoulder_pitch_joint': 500.00,
-                        'left_shoulder_roll_joint': 500., 
-                        'left_shoulder_yaw_joint': 500., 
-                        'left_elbow_joint': 500., 
-                        'left_wrist_yaw_joint': 500.,
-                        'left_wrist_pitch_joint': 500., 
-                        'left_wrist_roll_joint': 500., 
-                        'right_shoulder_pitch_joint': 500., 
-                        'right_shoulder_roll_joint': 500., 
-                        'right_shoulder_yaw_joint': 500.,
-                        'right_elbow_joint': 500., 
-                        'right_wrist_yaw_joint':500., 
-                        'right_wrist_pitch_joint': 500., 
-                        'right_wrist_roll_joint': 500.,
+                        'left_shoulder_pitch_joint': 200.00,
+                        'left_shoulder_roll_joint': 200., 
+                        'left_shoulder_yaw_joint': 200., 
+                        'left_elbow_joint': 200., 
+                        'left_wrist_yaw_joint': 200.,
+                        'left_wrist_pitch_joint': 200., 
+                        'left_wrist_roll_joint': 200., 
+                        'right_shoulder_pitch_joint': 200., 
+                        'right_shoulder_roll_joint': 200., 
+                        'right_shoulder_yaw_joint': 200.,
+                        'right_elbow_joint': 200., 
+                        'right_wrist_yaw_joint':200., 
+                        'right_wrist_pitch_joint': 200., 
+                        'right_wrist_roll_joint': 200.,
 
                         'L_index_proximal_joint':0,
                         'L_index_intermediate_joint':0,
@@ -127,8 +127,8 @@ class ZerohandRoughCfg( LeggedRobotCfg ):
                         'L_thumb_intermediate_joint':0,
                         'L_thumb_distal_joint':0,
 
-                        'neck_pitch_joint':500.,
-                        'neck_yaw_joint':500.,
+                        'neck_pitch_joint':200.,
+                        'neck_yaw_joint':200.,
 
                         'R_index_proximal_joint':0,
                         'R_index_intermediate_joint':0,
@@ -145,21 +145,21 @@ class ZerohandRoughCfg( LeggedRobotCfg ):
 
                         }  # [N*m/rad]
         damping = { 
-            'left_shoulder_pitch_joint': 1,   # [rad]-15,15
-            'left_shoulder_roll_joint': 1,   # [rad]-175,0.75
-            'left_shoulder_yaw_joint': 1,  # [rad]-15,15
-            'left_elbow_joint': 1,   # [rad]0,2.5
-            'left_wrist_yaw_joint': 1,    # [rad]-15,15
-            'left_wrist_pitch_joint': 1,    # [rad]-115,15
-            'left_wrist_roll_joint': 1,    # [rad]-1 1
+            'left_shoulder_pitch_joint': 5,   # [rad]-55,55
+            'left_shoulder_roll_joint': 5,   # [rad]-575,0.75
+            'left_shoulder_yaw_joint': 5,  # [rad]-55,55
+            'left_elbow_joint': 5,   # [rad]0,2.5
+            'left_wrist_yaw_joint': 5,    # [rad]-55,55
+            'left_wrist_pitch_joint': 5,    # [rad]-555,55
+            'left_wrist_roll_joint': 5,    # [rad]-5 5
 
-            'right_shoulder_pitch_joint': 1,   # [rad] -15,15
-            'right_shoulder_roll_joint': 1,   # [rad]-0.75,175
-            'right_shoulder_yaw_joint': 1,  # [rad]-15,15
-            'right_elbow_joint': 1,   # [rad] -2.5,0
-            'right_wrist_yaw_joint': 1,   # [rad]-15,15
-            'right_wrist_pitch_joint': 1,   # [rad] -115,115
-            'right_wrist_roll_joint': 1,   # [rad] -1,1
+            'right_shoulder_pitch_joint': 5,   # [rad] -55,55
+            'right_shoulder_roll_joint': 5,   # [rad]-0.75,575
+            'right_shoulder_yaw_joint': 5,  # [rad]-55,55
+            'right_elbow_joint': 5,   # [rad] -2.5,0
+            'right_wrist_yaw_joint': 5,   # [rad]-55,55
+            'right_wrist_pitch_joint': 5,   # [rad] -555,555
+            'right_wrist_roll_joint': 5,   # [rad] -1,1
 
             'L_index_proximal_joint':0,
             'L_index_intermediate_joint':0,

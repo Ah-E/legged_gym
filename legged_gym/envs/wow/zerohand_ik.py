@@ -70,7 +70,7 @@ class ZeroHand_IK:
             pin.Frame('L_ee',
                       self.reduced_robot.model.getJointId('left_wrist_roll_joint'),
                       pin.SE3(np.eye(3),
-                              np.array([0.1,0,0]).T), # end efector placements related to the joint above
+                              np.array([0.,0.,0.]).T), # end efector placements related to the joint above
                       pin.FrameType.OP_FRAME)
         )
         self.reduced_robot.model.addFrame(
@@ -78,7 +78,7 @@ class ZeroHand_IK:
             pin.Frame('R_ee',
                       self.reduced_robot.model.getJointId('right_wrist_roll_joint'),
                       pin.SE3(np.eye(3),
-                              np.array([0.1,0,0]).T),
+                              np.array([0.,0.,0.]).T),
                       pin.FrameType.OP_FRAME)
         )
         #迭代初始值
@@ -87,12 +87,16 @@ class ZeroHand_IK:
         # 基于casadi创建机器人模型 Creating Casadi models and data for symbolic computing
         self.cmodel = cpin.Model(self.reduced_robot.model)
         self.cdata = self.cmodel.createData()    
-
+        self.model = pin.Model(self.reduced_robot.model)
+        self.data = self.model.createData()   
+        
+        
         # 创建符号变量 Creating symbolic variables    <<<<<<<<<<<<<<<<<<<<<<<
         self.cq = casadi.SX.sym("q", self.reduced_robot.model.nq, 1) # 创建关节角度符号变量（变量名，元素，每个元素的维度）
         self.cTf_l = casadi.SX.sym("tf_l", 4, 4) # 创建左手末端执行器符号变量
         self.cTf_r = casadi.SX.sym("tf_r", 4, 4) # 创建左手末端执行器符号变量
         cpin.framesForwardKinematics(self.cmodel, self.cdata, self.cq) # 计算正运动学 fk
+        pin.forwardKinematics(self.model, self.data, np.zeros(self.reduced_robot.model.nq))
 
         # Get the hand joint ID and define the error function
         self.L_hand_id = self.reduced_robot.model.getFrameId("L_ee") # 获得左末端执行器坐标系id
@@ -143,7 +147,7 @@ class ZeroHand_IK:
         opts = {
             'ipopt':{
                 'print_level':0, # 关闭输出 Turn off the solver’s output information.
-                'max_iter':30, # 最大迭代次数
+                'max_iter':50, # 最大迭代次数
                 'tol':5e-3 # 收敛容差 convergence tolerance
             },
             'print_time':False
@@ -158,7 +162,16 @@ class ZeroHand_IK:
         robot_left_pose[:3, 3] *= scale_factor
         robot_right_pose[:3, 3] *= scale_factor
         return robot_left_pose, robot_right_pose
-
+    def fk_fun(self,dof_pos):
+        pin.forwardKinematics(self.model, self.data, dof_pos)
+        # update forward kinematics of end effector frame
+        pin.updateFramePlacement(self.model, self.data, self.model.getFrameId("L_ee"))
+        pin.updateFramePlacement(self.model, self.data, self.model.getFrameId("R_ee"))
+        T_L = self.data.oMf[self.model.getFrameId("L_ee")]
+        T_R = self.data.oMf[self.model.getFrameId("R_ee")]
+        # T_L = self.cdata.oMf[self.L_hand_id] 
+        # T_R = self.cdata.oMf[self.R_hand_id]
+        return T_L,T_R
     #逆运动学求解
     def ik_fun(self, left_pose, right_pose, motorstate=None, motorV=None):
         
@@ -209,12 +222,24 @@ class ZeroHand_IK:
 
 
 #单独测试ik时启用以下代码
-# zerohandIK = ZeroHand_IK()
-# left_pose = np.eye(4)
-# right_pose = np.eye(4)
-# left_pose[0:3,3] = np.array([0.0,0.2677,-0.5507])
-# right_pose[0:3,3] = np.array([0.0,-0.2565,-0.5510])
-# # sol_q, tau_ff,flag = zerohandIK.ik_fun(left_pose, right_pose)
+zerohandIK = ZeroHand_IK()
+left_pose = np.eye(4)
+right_pose = np.eye(4)
+left_pose[0:3,3] = np.array([0.0,0.2565,-0.3])
+left_pose = np.array([[ 0.69670671,  0.        ,  0.71735609, 0.],
+       [ 0.        ,  1.        ,  0.        ,0.267],
+       [-0.71735609,  0.        ,  0.69670671,-0.25],[0,0,0,1]])
+
+
+right_pose[0:3,3] = np.array([0.0,-0.2565,-0.3])
+
+sol_q, flag = zerohandIK.ik_fun(left_pose, right_pose)
+T_L,T_R = zerohandIK.fk_fun(sol_q)
+print("sol_q: ",sol_q)
+print("T_L: ", T_L)      
+print("T_R: ", T_R)
+
+# sol_q, tau_ff,flag = zerohandIK.ik_fun(left_pose, right_pose)
 # t1 = time.time()
 # num = 100
 # for i in range(num):
@@ -222,5 +247,5 @@ class ZeroHand_IK:
 
 # print("use time: ", (time.time() - t1)/num)
 # print("sol_q: ",sol_q)
-# # print("tau_ff: ",tau_ff)
+# print("tau_ff: ",tau_ff)
 

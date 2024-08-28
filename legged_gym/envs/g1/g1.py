@@ -73,7 +73,7 @@ class G1(LeggedRobot):
         left_pose[0:3,3] = np.array([0.0,0.16,-0.2507])
         right_pose[0:3,3] = np.array([0.0,-0.16,-0.5510])
         init_dof_pos = self.dof_pos[0,0:12].cpu().numpy()
-        self.B[:] = self.ik(left_pose,right_pose,init_dof_pos)
+        # self.B[:] = self.ik(left_pose,right_pose,init_dof_pos)
 
         self._prepare_reward_function()
         self.init_done = True
@@ -82,7 +82,7 @@ class G1(LeggedRobot):
         urdf_file = '../../resources/robots/g1/urdf/g1.urdf'
         urdf_path = '../../resources/robots/g1/urdf'
         self.g1_foot_ik = G1_FOOT_IK(urdf_file,urdf_path)
-        self.g1_hand_ik = G1_HAND_IK(urdf_file,urdf_path)
+        # self.g1_hand_ik = G1_HAND_IK(urdf_file,urdf_path)
 
     def ik(self,left_pose,right_pose,init_dof_pos):
         # self.dof_ik = torch.cat((self.dof_pos[0,0:7],self.dof_pos[0,9:16]),dim=0)
@@ -155,6 +155,56 @@ class G1(LeggedRobot):
         self.A =  torch.zeros(self.num_envs,self.num_actions, dtype=torch.float, device=self.device)
         self.B =  torch.zeros(self.num_envs,self.num_actions, dtype=torch.float, device=self.device)#bias
         self.T = 4. * torch.ones(self.num_envs,self.num_actions, dtype=torch.float, device=self.device) # time of a walking period
+        
+        self.B[:,0] = 0.3 # left_hip_pitch_joint lower="-2.35" upper="3.05" +hou
+        self.B[:,6] = 0.3 # right_hip_pitch_joint lower="-2.35" upper="3.05" +hou
+        self.B[:,4] = 0.6 # left_ankle_pitch_joint lower="-0.68" upper="0.73" +xia
+        self.B[:,10] = 0.6 # right_ankle_pitch_joint lower="-0.68" upper="0.73" +xia
+        self.B[:,16] = 0.5 # left_elbow_pitch_joint lower="-0.2268" upper="3.4208" +hou
+        self.B[:,21] = 0.5 # right_elbow_pitch_joint lower="-0.2268" upper="3.4208" +hou
+        self.B[:,14] = 0.25 # left_shoulder_roll_joint lower="-1.5882" upper="2.2515" +wai
+        self.B[:,19] = -0.25 # right_shoulder_roll_joint lower="-2.2515" upper="1.5882" +nei
+        self.B[:,13] = -0.4 # left_shoulder_pitch_joint lower="-2.9671" upper="2.7925" +hou
+        self.B[:,18] = -0.4 # right_shoulder_pitch_joint lower="-2.9671" upper="2.7925" +hou
+        self.B[:,17] = 0 # left_elbow_roll_joint lower="-2.0943" upper="2.0943" +nei
+        self.B[:,22] = 0 # left_elbow_roll_joint lower="-2.0943" upper="2.0943" +wai
+        self.B[:,3] = 0.5 # left_knee_joint lower="-0.33489" upper="2.5449" +hou
+        self.B[:,9] = 0.5 # right_knee_joint lower="-0.33489" upper="2.5449" +hou
+
+        # left foot
+        self.A[:,0] = -0.5 # left_hip_pitch_joint lower="-2.35" upper="3.05" +hou
+        self.A[:,1] = 0. # left_hip_roll_joint lower="-0.26" upper="2.53" +wai
+        self.A[:,2] = 0. # left_hip_yaw_joint lower="-2.75" upper="2.75" +zuo
+        self.A[:,3] = -1.1 # left_knee_joint lower="-0.33489" upper="2.5449" +hou
+        self.A[:,4] = -0.6 # left_ankle_pitch_joint lower="-0.68" upper="0.73" +xia
+        self.A[:,5] = 0. # left_ankle_roll_joint lower="-0.2618" upper="0.2618"+zuo
+        # right foot
+        self.A[:,6] = -0.5# right_hip_pitch_joint lower="-2.35" upper="3.05" +hou
+        self.A[:,7] = 0.# right_hip_roll_joint lower="-2.53" upper="0.26" +nei
+        self.A[:,8] = 0. # right_hip_yaw_joint lower="-2.75" upper="2.75" +zuo
+        self.A[:,9] = -1.1 # right_knee_joint lower="-0.3389" upper="2.5449" +hou
+        self.A[:,10] =-0.6 # right_ankle_pitch_joint lower="-0.68" upper="0.73" +xia
+        self.A[:,11] = 0. # right_ankle_roll_joint lower="-0.2618" upper="0.2618"+zuo
+        
+        #toso
+        self.A[:,12] = 0. # torso_joint lower="-2.618" upper="2.618" +zuo
+
+        # left arm
+        self.A[:,13] = 1. # left_shoulder_pitch_joint lower="-2.9671" upper="2.7925" +hou
+        self.A[:,14] = 0. # left_shoulder_roll_joint lower="-1.5882" upper="2.2515" +wai
+        self.A[:,15] = 0. # left_shoulder_yaw_joint lower="-2.618" upper="2.618" +zuo
+        self.A[:,16] = 0. # left_elbow_pitch_joint lower="-0.2268" upper="3.4208" +hou
+        self.A[:,17] = 0. # left_elbow_roll_joint lower="-2.0943" upper="2.0943" +nei
+
+        # right arm
+        self.A[:,18] = 1. # right_shoulder_pitch_joint lower="-2.9671" upper="2.7925" +hou
+        self.A[:,19] = 0. # right_shoulder_roll_joint lower="-2.2515" upper="1.5882" +nei
+        self.A[:,20] = 0. # right_shoulder_yaw_joint lower="-2.618" upper="2.618" +zuo
+        self.A[:,21] = 0. # right_elbow_pitch_joint lower="-0.2268" upper="3.4208" +hou
+        self.A[:,22] = 0. # left_elbow_roll_joint lower="-2.0943" upper="2.0943" +wai
+
+
+
 
         ########-------------------------------- my scripts -------------------------------########
 

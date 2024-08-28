@@ -38,16 +38,16 @@ from isaacgym import gymtorch, gymapi, gymutil
 import torch
 from typing import Tuple, Dict
 from legged_gym.envs import LeggedRobot
-from .zerohand_config import ZerohandRoughCfg
+from .little_hand_config import LittleHandRoughCfg
 import sys
 
 
 #ik
-from .zerohand_ik import ZeroHand_IK
+from .wow_little_ik import WowLittle_IK
 
 
-class Zerohand(LeggedRobot):
-    def __init__(self, cfg: ZerohandRoughCfg, sim_params, physics_engine, sim_device, headless):
+class LittleHand(LeggedRobot):
+    def __init__(self, cfg: LittleHandRoughCfg, sim_params, physics_engine, sim_device, headless):
         """ Parses the provided config file,
             calls create_sim() (which creates, simulation, terrain and environments),
             initilizes pytorch buffers used during training
@@ -77,32 +77,28 @@ class Zerohand(LeggedRobot):
         # right_pose = np.eye(4)
         # left_pose[0:3,3] = np.array([0.0,0.2677,-0.5507])
         # right_pose[0:3,3] = np.array([0.0,-0.2677,-0.5510])
-
-        # left_pose = np.array([[0.,0.,-1.,0.2],[-1.,0.,0.,0.2677],[0.,1.,0.,-0.3],[0.,0.,0.,1.]])
-        # right_pose = np.array([[0.,0.,-1.,0.2],[-1.,0.,0.,-0.2677],[0.,1.,0.,-0.3],[ 0.,0.,0.,1.]])
-        
-        left_pose = np.array([[1.,0.,0.,0.0],[0.,1.,0.,0.2677],[0.,0.,1.,-0.55],[0.,0.,0.,1.]])
-        right_pose = np.array([[1.,0.,0.,0.],[0.,1.,0.,-0.2677],[0.,0.,1.,-0.55],[0.,0.,0.,1.]])
-        # left_pose = np.array([[0.,0.,-1.,0.0],[1.,0.,0.,0.2677],[0.,-1.,0.,-0.05],[ 0.,0.,0.,1.]])
-        # right_pose = np.array([[0.,0.,-1.,0.35],[1.,0.,0.,-0.2677],[0.,-1.,0.,-0.05],[ 0.,0.,0.,1.]])
+        # left_pose = np.array([[1.,0.,0.,0.],[0.,1.,0.,0.2677],[0.,0.,1.,-0.55],[0.,0.,0.,1.]])
+        left_pose = np.array([[1.,0.,0.,0.],[0.,1.,0.,0.3],[0.,0.,1.,-0.5],[0.,0.,0.,1.]])
+        right_pose = np.array([[0.,0.,-1,0.4],[1.,0.,0.,-0.3],[0.,-1.,0.,-0.3],[ 0.,0.,0.,1.]])
+        init_dof_pos = (torch.cat((self.dof_pos[0,0:7],self.dof_pos[0,8:15]),dim=0)).cpu().numpy()
         # self.q_control = self.ik(left_pose,right_pose,init_dof_pos)
-        self.B[:] = self.ik(left_pose,right_pose)
+        self.B[:] = self.ik(left_pose,right_pose,init_dof_pos)
 
 
         self._prepare_reward_function()
         self.init_done = True
     
     def _init_ik(self):
-        urdf_file = '../../resources/robots/wow_body/urdf/wow_body.urdf'
-        urdf_path = '../../resources/robots/wow_body/urdf'
-        self.zerohand_ik = ZeroHand_IK(urdf_file,urdf_path)
-
+        urdf_file = '../../resources/robots/wow_little/urdf/up_body_wo_dummy.urdf'
+        urdf_path = '../../resources/robots/wow_little/urdf'
+        self.littlehand_ik = WowLittle_IK(urdf_file,urdf_path)
         
-    def ik(self,left_pose,right_pose,init_dof_pos=np.zeros(14)):
-        q_ik,flag = self.zerohand_ik.ik_fun(left_pose,right_pose,init_dof_pos)
-        # print("q_ik: ",q_ik)
+    def ik(self,left_pose,right_pose,init_dof_pos):
+        q_ik,flag = self.littlehand_ik.ik_fun(left_pose,right_pose,init_dof_pos)
+        print("q_ik: ",q_ik)
         if flag:
-            q_ik = np.concatenate((q_ik[0:7],np.zeros(14),q_ik[7:14],np.zeros(12)))
+            # q_ik = np.concatenate((q_ik[0:7],np.zeros(2),q_ik[7:14],np.zeros(24)))
+            q_ik = np.concatenate((q_ik[0:7],np.zeros(1),q_ik[7:14],np.zeros(1)))
             Q = torch.from_numpy(q_ik)
         else:
             print("ik fail")
@@ -173,7 +169,7 @@ class Zerohand(LeggedRobot):
         self.A =  torch.zeros(self.num_envs,self.num_actions, dtype=torch.float, device=self.device)
         self.B =  torch.zeros(self.num_envs,self.num_actions, dtype=torch.float, device=self.device)#bias
 
-        self.T = 50. * torch.ones(self.num_envs,self.num_actions, dtype=torch.float, device=self.device) # time of a walking period
+        self.T = 4. * torch.ones(self.num_envs,self.num_actions, dtype=torch.float, device=self.device) # time of a walking period
 
         ########-------------------------------- my scripts -------------------------------########
 
@@ -212,20 +208,6 @@ class Zerohand(LeggedRobot):
         self.ufb = (1-self.filter_alpha)*self.actions + self.filter_alpha*self.ufb_last
         # print(self.actions[0,:])
         self.ufb_last = 1.*self.ufb
-        
-        
-        a = 0.3 * np.sin(0.5*np.pi * (self.time[0,0]/self.T[0,0]).cpu().numpy()) 
-        left_pose = np.array([[1.,0.,0.,0.0 + a ],[0.,1.,0.,0.2677 + a],[0.,0.,1.,-0.55 + a],[0.,0.,0.,1.]])
-        # left_pose[0:3,0:3] = Ry(-a*8.)
-
-        right_pose = np.array([[1.,0.,0.,0.],[0.,1.,0.,-0.2677],[0.,0.,1.,-0.55],[0.,0.,0.,1.]])
-        # left_pose = np.array([[0.,0.,-1.,0.0],[1.,0.,0.,0.2677],[0.,-1.,0.,-0.05],[ 0.,0.,0.,1.]])
-        # right_pose = np.array([[0.,0.,-1.,0.35],[1.,0.,0.,-0.2677],[0.,-1.,0.,-0.05],[ 0.,0.,0.,1.]])
-        init_dof_pos = (torch.cat((self.B[0,0:7],self.B[0,21:28]),dim=0)).cpu().numpy()
-        # self.q_control = self.ik(left_pose,right_pose,init_dof_pos)
-        self.B[:] = self.ik(left_pose,right_pose,init_dof_pos)
-        
-        
         ########-------------------------------- my scripts -------------------------------########
         # step physics and render each frame
         self.render()
@@ -233,6 +215,8 @@ class Zerohand(LeggedRobot):
             #self.torques = self._compute_torques(self.actions).view(self.torques.shape)
             ########-------------------------------- my scripts -------------------------------########
             self.torques = self._compute_torques(self.uff).view(self.torques.shape) #+ self.ufb
+            # print(self.torques)
+            # print(self.uff)
             # if self.time[0,0] == 0.0:
             #     print("self.uff:", self.uff)
             #     print("self.dof_pos:", self.dof_pos)
@@ -245,8 +229,6 @@ class Zerohand(LeggedRobot):
                 self.gym.fetch_results(self.sim, True)
             self.gym.refresh_dof_state_tensor(self.sim)
         self.post_physics_step()
-
-
 
         # return clipped obs, clipped states (None), rewards, dones and infos
         clip_obs = self.cfg.normalization.clip_observations
@@ -353,10 +335,3 @@ def uff_cos(A,B,t,T):
     uff[:,6:12] = uff2[:,6:12]
     uff[:,18:23] = uff2[:,18:23]
     return uff
-
-def Ry(theta):
-    R = np.array([[np.cos(theta),0,np.sin(theta)],[0,1,0],[-np.sin(theta),0,np.cos(theta)]])
-    return R
-def Rx(theta):
-    R = np.array([[1,0,0][0,np.cos(theta),-np.sin(theta)],[0,np.sin(theta),np.cos(theta)]])
-    return R

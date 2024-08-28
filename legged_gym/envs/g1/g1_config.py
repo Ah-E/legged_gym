@@ -113,8 +113,8 @@ class G1RoughCfg( LeggedRobotCfg ):
             'left_hip_roll_joint': 200.0,
             'left_hip_yaw_joint': 200.0,
             'left_knee_joint': 200.0,
-            'left_ankle_pitch_joint': 200.0,
-            'left_ankle_roll_joint': 200.0,
+            'left_ankle_pitch_joint': 50.0,
+            'left_ankle_roll_joint': 50.0,
 
             'left_shoulder_pitch_joint': 200.0,
             'left_shoulder_roll_joint': 200.0,
@@ -134,8 +134,8 @@ class G1RoughCfg( LeggedRobotCfg ):
             'right_hip_roll_joint': 200.0,
             'right_hip_yaw_joint': 200.0,
             'right_knee_joint': 200.0,
-            'right_ankle_pitch_joint': 200.0,
-            'right_ankle_roll_joint': 200.0,
+            'right_ankle_pitch_joint': 50.0,
+            'right_ankle_roll_joint': 50.0,
 
             'right_shoulder_pitch_joint': 200.0,
             'right_shoulder_roll_joint': 200.0,
@@ -165,7 +165,7 @@ class G1RoughCfg( LeggedRobotCfg ):
             'left_shoulder_pitch_joint': 4.0,
             'left_shoulder_roll_joint': 4.0,
             'left_shoulder_yaw_joint': 4.0,
-            'left_elbow_pitch_joint': 4.0,
+            'left_elbow_pitch_joint': 0.2,
             'left_elbow_roll_joint': 0.2,
 
             # 'left_zero_joint': 3.0,
@@ -186,7 +186,7 @@ class G1RoughCfg( LeggedRobotCfg ):
             'right_shoulder_pitch_joint': 4.0,
             'right_shoulder_roll_joint': 4.0,
             'right_shoulder_yaw_joint': 4.0,
-            'right_elbow_pitch_joint': 4.0,
+            'right_elbow_pitch_joint': 0.2,
             'right_elbow_roll_joint': 0.2,
 
             # 'right_zero_joint': 3.0,

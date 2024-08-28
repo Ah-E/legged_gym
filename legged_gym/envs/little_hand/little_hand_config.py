@@ -30,10 +30,10 @@
 
 from legged_gym.envs.base.legged_robot_config import LeggedRobotCfg, LeggedRobotCfgPPO
 
-class FrankaRoughCfg( LeggedRobotCfg ):
+class LittleHandRoughCfg( LeggedRobotCfg ):
     class env( LeggedRobotCfg.env):
         num_envs = 1
-        num_observations = 169
+        num_observations = 197
         num_actions = 16
 
     
@@ -67,56 +67,57 @@ class FrankaRoughCfg( LeggedRobotCfg ):
     class control( LeggedRobotCfg.control ):
         # PD Drive parameters:
         stiffness = {               
-            'left_1_joint':100.,
-            'left_2_joint':100.,
-            'left_3_joint':100.,
-            'left_4_joint':100.,
-            'left_5_joint':100.,
-            'left_6_joint':100.,
-            'left_7_joint':100.,
-            'left_8_joint':100.,
+            'left_1_joint':20,
+            'left_2_joint':20,
+            'left_3_joint':20,
+            'left_4_joint':20,
+            'left_5_joint':20,
+            'left_6_joint':20,
+            'left_7_joint':20,
+            'left_8_joint':20,
                         
-            'right_1_joint':100.,
-            'right_2_joint':100.,
-            'right_3_joint':100.,
-            'right_4_joint':100.,
-            'right_5_joint':100.,
-            'right_6_joint':100.,
-            'right_7_joint':100.,
-            'right_8_joint':100.,   
+            'right_1_joint':20,
+            'right_2_joint':20,
+            'right_3_joint':20,
+            'right_4_joint':20,
+            'right_5_joint':20,
+            'right_6_joint':20,
+            'right_7_joint':20,
+            'right_8_joint':20,   
                         }  # [N*m/rad]
         damping = { 
-            'left_1_joint':2.,
-            'left_2_joint':2.,
-            'left_3_joint':2.,
-            'left_4_joint':2.,
-            'left_5_joint':2.,
-            'left_6_joint':2.,
-            'left_7_joint':2.,
-            'left_8_joint':2.,
+            'left_1_joint':0.01,
+            'left_2_joint':0.01,
+            'left_3_joint':0.01,
+            'left_4_joint':0.01,
+            'left_5_joint':0.01,
+            'left_6_joint':0.01,
+            'left_7_joint':0.01,
+            'left_8_joint':0.01,
                         
-            'right_1_joint':2.,
-            'right_2_joint':2.,
-            'right_3_joint':2.,
-            'right_4_joint':2.,
-            'right_5_joint':2.,
-            'right_6_joint':2.,
-            'right_7_joint':2.,
-            'right_8_joint':2., 
+            'right_1_joint':0.01,
+            'right_2_joint':0.01,
+            'right_3_joint':0.01,
+            'right_4_joint':0.01,
+            'right_5_joint':0.01,
+            'right_6_joint':0.01,
+            'right_7_joint':0.01,
+            'right_8_joint':0.01, 
                     }  # [N*m*s/rad]     # [N*m*s/rad]
         # action scale: target angle = actionScale * action + defaultAngle
-        action_scale = 0.5
+        action_scale = 1
         # decimation: Number of control action updates @ sim DT per policy DT
         decimation = 4
         
     class asset( LeggedRobotCfg.asset ):
-        file = '{LEGGED_GYM_ROOT_DIR}/resources/robots/cassie/urdf/cassie.urdf'
-        name = "cassie"
+        fix_base_link = True # fixe the base of the robot
+        file = '{LEGGED_GYM_ROOT_DIR}/resources/robots/wow_little/urdf/up_body_wo_dummy.urdf'
+        name = "littlehand"
         foot_name = 'toe'
-        terminate_after_contacts_on = ['pelvis']
+        terminate_after_contacts_on = ['right_1_joint','left_1_joint']
         flip_visual_attachments = False
         self_collisions = 1 # 1 to disable, 0 to enable...bitwise filter
-  
+
     class rewards( LeggedRobotCfg.rewards ):
         soft_dof_pos_limit = 0.95
         soft_dof_vel_limit = 0.9
@@ -136,7 +137,7 @@ class FrankaRoughCfg( LeggedRobotCfg ):
             ang_vel_xy = -0.0
             feet_contact_forces = -0.
 
-class CassieRoughCfgPPO( LeggedRobotCfgPPO ):
+class LittleHandRoughCfgPPO( LeggedRobotCfgPPO ):
     
     class runner( LeggedRobotCfgPPO.runner ):
         run_name = ''

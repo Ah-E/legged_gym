@@ -17,7 +17,7 @@ parent_dir = os.path.dirname(current_dir)
 sys.path.append(parent_dir)
 
 class WowLittle_IK:
-    def __init__(self,urdf_file='../../../resources/robots/wow_body/urdf/wow_body.urdf',urdf_path='../../../resources/robots/wow_body/urdf'):
+    def __init__(self,urdf_file='../../../resources/robots/wow_little/urdf/up_body_wo_dummy.urdf',urdf_path='../../../resources/robots/wow_little/urdf'):
         #urdf_file和urdf_path需要修改为实际运行程序时所在目录对应的路径
         current_dir = os.path.dirname(os.path.abspath(__file__))
         parent_dir = os.path.dirname(current_dir)
@@ -60,7 +60,10 @@ class WowLittle_IK:
 
         # 基于casadi创建机器人模型 Creating Casadi models and data for symbolic computing
         self.cmodel = cpin.Model(self.reduced_robot.model)
-        self.cdata = self.cmodel.createData()    
+        self.model = pin.Model(self.reduced_robot.model)
+        self.cdata = self.cmodel.createData()
+        self.data = self.model.createData()
+   
 
         # 创建符号变量 Creating symbolic variables    <<<<<<<<<<<<<<<<<<<<<<<
         self.cq = casadi.SX.sym("q", self.reduced_robot.model.nq, 1) # 创建关节角度符号变量（变量名，元素，每个元素的维度）
@@ -132,7 +135,26 @@ class WowLittle_IK:
         robot_left_pose[:3, 3] *= scale_factor
         robot_right_pose[:3, 3] *= scale_factor
         return robot_left_pose, robot_right_pose
+    
+    def fk_fun(self,dof_pos):
+        pin.forwardKinematics(self.model, self.data, dof_pos)
+        # update forward kinematics of end effector frame
+        pin.updateFramePlacement(self.model, self.data, self.model.getFrameId("L_ee"))
+        pin.updateFramePlacement(self.model, self.data, self.model.getFrameId("R_ee"))
+        T_L_ = self.data.oMf[self.model.getFrameId("L_ee")]
+        T_R_ = self.data.oMf[self.model.getFrameId("R_ee")]
+        T_L = np.eye(4)
+        T_R = np.eye(4)
 
+        T_L[0:3,0:3] = T_L_.rotation
+        T_L[0:3,3] = T_L_.translation
+        T_R[0:3,0:3] = T_R_.rotation
+        T_R[0:3,3] = T_R_.translation
+        # T_L = self.cdata.oMf[self.L_hand_id] 
+        # T_R = self.cdata.oMf[self.R_hand_id]
+        return T_L,T_R
+        
+        
     #逆运动学求解
     def ik_fun(self, left_pose, right_pose, motorstate=None, motorV=None):
         
@@ -158,7 +180,6 @@ class WowLittle_IK:
             sol = self.opti.solve_limited()
             #求解优化问题
             sol_q = self.opti.value(self.var_q)
-
             # self.vis.display(sol_q)
             self.init_data = sol_q
 
@@ -176,25 +197,40 @@ class WowLittle_IK:
             # return sol_q, tau_ff ,True
         
         except Exception as e:
-            print(f"ERROR in convergence, plotting debug info.{e}")
+            print("ERROR in convergence, plotting debug info.{e}")
             # sol_q = self.opti.debug.value(self.var_q)   # return original value
             # return sol_q, '',False
             return sol_q,False
 
 
-#单独测试ik时启用以下代码
-# zerohandIK = ZeroHand_IK()
-# left_pose = np.eye(4)
-# right_pose = np.eye(4)
-# left_pose[0:3,3] = np.array([0.0,0.2677,-0.5507])
-# right_pose[0:3,3] = np.array([0.0,-0.2565,-0.5510])
-# # sol_q, tau_ff,flag = zerohandIK.ik_fun(left_pose, right_pose)
-# t1 = time.time()
-# num = 100
-# for i in range(num):
-#     sol_q, flag = zerohandIK.ik_fun(left_pose, right_pose)
+def Ry(theta):
+    R = np.array([[np.cos(theta),0,np.sin(theta)],[0,1,0],[-np.sin(theta),0,np.cos(theta)]])
+    return R
 
-# print("use time: ", (time.time() - t1)/num)
-# print("sol_q: ",sol_q)
-# # print("tau_ff: ",tau_ff)
+if __name__ == "__main__":
+    
+    #单独测试ik时启用以下代码
+    littlehand = WowLittle_IK()
+    left_pose = np.eye(4)
+    right_pose = np.eye(4)
+    left_pose[0:3,3] = np.array([0.2,0.25,-0.3])
+    left_pose[0:3,0:3] = Ry(1)
+    print("Ry: ",Ry(1))
+    right_pose[0:3,3] = np.array([0.0,-0.25,-0.5])
+    # sol_q, tau_ff,flag = zerohandIK.ik_fun(left_pose, right_pose)
 
+
+    # t1 = time.time()
+    # num = 100
+    # for i in range(num):
+    #     sol_q, flag = littlehand.ik_fun(left_pose, right_pose)
+    # print("use time: ", (time.time() - t1)/num)
+
+    sol_q, flag = littlehand.ik_fun(left_pose, right_pose)
+    T_L,T_R = littlehand.fk_fun(sol_q)
+    print("sol_q: ",sol_q)
+    print("T_L: ", T_L)
+    print("T_R: ", T_R)
+
+    # print("tau_ff: ",tau_ff)
+    

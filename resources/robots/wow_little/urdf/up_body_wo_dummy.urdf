@@ -26,7 +26,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/base.STL" />
+                    filename="../meshes/base.STL" />
             </geometry>
             <material
                 name="">
@@ -40,7 +40,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/base.STL" />
+                    filename="../meshes/base.STL" />
             </geometry>
         </collision>
     </link>
@@ -66,7 +66,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/left_1_link.STL" />
+                    filename="../meshes/left_1_link.STL" />
             </geometry>
             <material
                 name="">
@@ -80,7 +80,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/left_1_link.STL" />
+                    filename="../meshes/left_1_link.STL" />
             </geometry>
         </collision>
     </link>
@@ -99,7 +99,7 @@ Stephen Brawner (brawner@gmail.com)
         <limit
             lower="-1.22"
             upper="2.2"
-            effort="0"
+            effort="30"
             velocity="3" />
     </joint>
     <link
@@ -124,7 +124,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/left_2_link.STL" />
+                    filename="../meshes/left_2_link.STL" />
             </geometry>
             <material
                 name="">
@@ -138,7 +138,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/left_2_link.STL" />
+                    filename="../meshes/left_2_link.STL" />
             </geometry>
         </collision>
     </link>
@@ -157,7 +157,7 @@ Stephen Brawner (brawner@gmail.com)
         <limit
             lower="-1.5"
             upper="0.2"
-            effort="0"
+            effort="30"
             velocity="3" />
     </joint>
     <link
@@ -182,7 +182,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/left_3_link.STL" />
+                    filename="../meshes/left_3_link.STL" />
             </geometry>
             <material
                 name="">
@@ -196,7 +196,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/left_3_link.STL" />
+                    filename="../meshes/left_3_link.STL" />
             </geometry>
         </collision>
     </link>
@@ -215,7 +215,7 @@ Stephen Brawner (brawner@gmail.com)
         <limit
             lower="-2.5"
             upper="2.5"
-            effort="0"
+            effort="30"
             velocity="3" />
     </joint>
     <link
@@ -240,7 +240,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/left_4_link.STL" />
+                    filename="../meshes/left_4_link.STL" />
             </geometry>
             <material
                 name="">
@@ -254,7 +254,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/left_4_link.STL" />
+                    filename="../meshes/left_4_link.STL" />
             </geometry>
         </collision>
     </link>
@@ -273,7 +273,7 @@ Stephen Brawner (brawner@gmail.com)
         <limit
             lower="-1.75"
             upper="1.75"
-            effort="0"
+            effort="30"
             velocity="3" />
     </joint>
     <link
@@ -298,7 +298,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/left_5_link.STL" />
+                    filename="../meshes/left_5_link.STL" />
             </geometry>
             <material
                 name="">
@@ -312,7 +312,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/left_5_link.STL" />
+                    filename="../meshes/left_5_link.STL" />
             </geometry>
         </collision>
     </link>
@@ -331,7 +331,7 @@ Stephen Brawner (brawner@gmail.com)
         <limit
             lower="-3"
             upper="3"
-            effort="0"
+            effort="30"
             velocity="3" />
     </joint>
     <link
@@ -356,7 +356,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/left_6_link.STL" />
+                    filename="../meshes/left_6_link.STL" />
             </geometry>
             <material
                 name="">
@@ -370,7 +370,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/left_6_link.STL" />
+                    filename="../meshes/left_6_link.STL" />
             </geometry>
         </collision>
     </link>
@@ -389,7 +389,7 @@ Stephen Brawner (brawner@gmail.com)
         <limit
             lower="-1.75"
             upper="1.75"
-            effort="0"
+            effort="30"
             velocity="3" />
     </joint>
     <link
@@ -414,7 +414,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/left_7_link.STL" />
+                    filename="../meshes/left_7_link.STL" />
             </geometry>
             <material
                 name="">
@@ -428,7 +428,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/left_7_link.STL" />
+                    filename="../meshes/left_7_link.STL" />
             </geometry>
         </collision>
     </link>
@@ -447,7 +447,7 @@ Stephen Brawner (brawner@gmail.com)
         <limit
             lower="-1.75"
             upper="1.75"
-            effort="0"
+            effort="30"
             velocity="3" />
     </joint>
     <link
@@ -472,7 +472,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/left_8_link.STL" />
+                    filename="../meshes/left_8_link.STL" />
             </geometry>
             <material
                 name="">
@@ -486,7 +486,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/left_8_link.STL" />
+                    filename="../meshes/left_8_link.STL" />
             </geometry>
         </collision>
     </link>
@@ -505,7 +505,7 @@ Stephen Brawner (brawner@gmail.com)
         <limit
             lower="-3"
             upper="3"
-            effort="0"
+            effort="30"
             velocity="3" />
     </joint>
     <link
@@ -530,7 +530,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/right_1_link.STL" />
+                    filename="../meshes/right_1_link.STL" />
             </geometry>
             <material
                 name="">
@@ -544,7 +544,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/right_1_link.STL" />
+                    filename="../meshes/right_1_link.STL" />
             </geometry>
         </collision>
     </link>
@@ -563,7 +563,7 @@ Stephen Brawner (brawner@gmail.com)
         <limit
             lower="-2.2"
             upper="1.22"
-            effort="0"
+            effort="30"
             velocity="3" />
     </joint>
     <link
@@ -588,7 +588,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/right_2_link.STL" />
+                    filename="../meshes/right_2_link.STL" />
             </geometry>
             <material
                 name="">
@@ -602,7 +602,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/right_2_link.STL" />
+                    filename="../meshes/right_2_link.STL" />
             </geometry>
         </collision>
     </link>
@@ -621,7 +621,7 @@ Stephen Brawner (brawner@gmail.com)
         <limit
             lower="-1.5"
             upper="0.2"
-            effort="0"
+            effort="30"
             velocity="3" />
     </joint>
     <link
@@ -646,7 +646,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/right_3_link.STL" />
+                    filename="../meshes/right_3_link.STL" />
             </geometry>
             <material
                 name="">
@@ -660,7 +660,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/right_3_link.STL" />
+                    filename="../meshes/right_3_link.STL" />
             </geometry>
         </collision>
     </link>
@@ -679,7 +679,7 @@ Stephen Brawner (brawner@gmail.com)
         <limit
             lower="-2.5"
             upper="2.5"
-            effort="0"
+            effort="30"
             velocity="3" />
     </joint>
     <link
@@ -704,7 +704,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/right_4_link.STL" />
+                    filename="../meshes/right_4_link.STL" />
             </geometry>
             <material
                 name="">
@@ -718,7 +718,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/right_4_link.STL" />
+                    filename="../meshes/right_4_link.STL" />
             </geometry>
         </collision>
     </link>
@@ -737,7 +737,7 @@ Stephen Brawner (brawner@gmail.com)
         <limit
             lower="-1.75"
             upper="1.75"
-            effort="0"
+            effort="30"
             velocity="3" />
     </joint>
     <link
@@ -762,7 +762,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/right_5_link.STL" />
+                    filename="../meshes/right_5_link.STL" />
             </geometry>
             <material
                 name="">
@@ -776,7 +776,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/right_5_link.STL" />
+                    filename="../meshes/right_5_link.STL" />
             </geometry>
         </collision>
     </link>
@@ -795,7 +795,7 @@ Stephen Brawner (brawner@gmail.com)
         <limit
             lower="-3"
             upper="3"
-            effort="0"
+            effort="30"
             velocity="3" />
     </joint>
     <link
@@ -820,7 +820,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/right_6_link.STL" />
+                    filename="../meshes/right_6_link.STL" />
             </geometry>
             <material
                 name="">
@@ -834,7 +834,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/right_6_link.STL" />
+                    filename="../meshes/right_6_link.STL" />
             </geometry>
         </collision>
     </link>
@@ -853,7 +853,7 @@ Stephen Brawner (brawner@gmail.com)
         <limit
             lower="-1.75"
             upper="1.75"
-            effort="0"
+            effort="30"
             velocity="3" />
     </joint>
     <link
@@ -878,7 +878,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/right_7_link.STL" />
+                    filename="../meshes/right_7_link.STL" />
             </geometry>
             <material
                 name="">
@@ -892,7 +892,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/right_7_link.STL" />
+                    filename="../meshes/right_7_link.STL" />
             </geometry>
         </collision>
     </link>
@@ -911,7 +911,7 @@ Stephen Brawner (brawner@gmail.com)
         <limit
             lower="-1.75"
             upper="1.75"
-            effort="0"
+            effort="30"
             velocity="3" />
     </joint>
     <link
@@ -936,7 +936,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/right_8_link.STL" />
+                    filename="../meshes/right_8_link.STL" />
             </geometry>
             <material
                 name="">
@@ -950,7 +950,7 @@ Stephen Brawner (brawner@gmail.com)
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                    filename="package://wow_description/meshes/right_8_link.STL" />
+                    filename="../meshes/right_8_link.STL" />
             </geometry>
         </collision>
     </link>
@@ -969,7 +969,7 @@ Stephen Brawner (brawner@gmail.com)
         <limit
             lower="-3"
             upper="3"
-            effort="0"
+            effort="30"
             velocity="3" />
     </joint>
     <transmission name="trans_left_1_joint">

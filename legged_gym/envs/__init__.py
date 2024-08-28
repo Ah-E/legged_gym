@@ -42,6 +42,8 @@ from .g1.g1 import G1
 from .g1.g1_config import G1RoughCfg, G1RoughCfgPPO
 from .wow.zerohand_config import ZerohandRoughCfg, ZerohandRoughCfgPPO
 from .wow.zerohand import Zerohand
+from .little_hand.little_hand_config import  LittleHandRoughCfg,LittleHandRoughCfgPPO
+from .little_hand.little_hand import LittleHand
 
 import os
 
@@ -54,3 +56,4 @@ task_registry.register( "a1", LeggedRobot, A1RoughCfg(), A1RoughCfgPPO() )
 task_registry.register( "cassie", Cassie, CassieRoughCfg(), CassieRoughCfgPPO() )
 task_registry.register( "g1", G1, G1RoughCfg(), G1RoughCfgPPO() )
 task_registry.register( "zerohand", Zerohand, ZerohandRoughCfg(), ZerohandRoughCfgPPO() )
+task_registry.register( "littlehand", LittleHand, LittleHandRoughCfg(), LittleHandRoughCfgPPO() )
