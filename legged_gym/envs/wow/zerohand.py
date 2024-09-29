@@ -40,7 +40,7 @@ from typing import Tuple, Dict
 from legged_gym.envs import LeggedRobot
 from .zerohand_config import ZerohandRoughCfg
 import sys
-
+import json
 
 #ik
 from .zerohand_ik import ZeroHand_IK
@@ -88,7 +88,11 @@ class Zerohand(LeggedRobot):
         # self.q_control = self.ik(left_pose,right_pose,init_dof_pos)
         self.B[:] = self.ik(left_pose,right_pose)
 
-
+        with open("../envs/wow/joint_angles_over_time.json", "r") as write_file:
+            self.data = np.array(json.load(write_file))
+        self.n = int(0)   
+        self.data_num = int(0)             
+            
         self._prepare_reward_function()
         self.init_done = True
     
@@ -223,7 +227,29 @@ class Zerohand(LeggedRobot):
         # right_pose = np.array([[0.,0.,-1.,0.35],[1.,0.,0.,-0.2677],[0.,-1.,0.,-0.05],[ 0.,0.,0.,1.]])
         init_dof_pos = (torch.cat((self.B[0,0:7],self.B[0,21:28]),dim=0)).cpu().numpy()
         # self.q_control = self.ik(left_pose,right_pose,init_dof_pos)
-        self.B[:] = self.ik(left_pose,right_pose,init_dof_pos)
+        
+        # self.B[:] = self.ik(left_pose,right_pose,init_dof_pos)
+        
+        
+        #yuheng
+        self.n = self.n + 1
+        if self.n == 100:
+            self.data_num = self.data_num + 1
+            self.n = 0
+            
+        if self.data_num<self.data.shape[0]:
+            print(self.data_num)
+        else:
+            self.data_num = int(0)
+
+        temp = self.data[self.data_num-1]
+        
+        
+        temp = self.data[1]
+        print(temp)
+        self.B[:] = torch.from_numpy(np.concatenate([temp[2:9],np.zeros(14),temp[9:16],np.zeros(12)]))
+        #yuheng
+        
         
         
         ########-------------------------------- my scripts -------------------------------########
@@ -232,14 +258,19 @@ class Zerohand(LeggedRobot):
         for _ in range(self.cfg.control.decimation):
             #self.torques = self._compute_torques(self.actions).view(self.torques.shape)
             ########-------------------------------- my scripts -------------------------------########
-            self.torques = self._compute_torques(self.uff).view(self.torques.shape) #+ self.ufb
+            self.torques = self._compute_torques(self.B).view(self.torques.shape) #+ self.ufb
             # if self.time[0,0] == 0.0:
             #     print("self.uff:", self.uff)
             #     print("self.dof_pos:", self.dof_pos)
             #     print("self.torques:", self.torques)
 
             ########-------------------------------- my scripts -------------------------------########
-            self.gym.set_dof_actuation_force_tensor(self.sim, gymtorch.unwrap_tensor(self.torques))
+            # self.gym.set_dof_actuation_force_tensor(self.sim, gymtorch.unwrap_tensor(self.torques))
+            self.gym.set_dof_position_target_tensor(self.sim, gymtorch.unwrap_tensor(self.B))
+            
+            
+            
+            
             self.gym.simulate(self.sim)
             if self.device == 'cpu':
                 self.gym.fetch_results(self.sim, True)
@@ -358,5 +389,5 @@ def Ry(theta):
     R = np.array([[np.cos(theta),0,np.sin(theta)],[0,1,0],[-np.sin(theta),0,np.cos(theta)]])
     return R
 def Rx(theta):
-    R = np.array([[1,0,0][0,np.cos(theta),-np.sin(theta)],[0,np.sin(theta),np.cos(theta)]])
+    R = np.array([[1,0,0],[0,np.cos(theta),-np.sin(theta)],[0,np.sin(theta),np.cos(theta)]])
     return R

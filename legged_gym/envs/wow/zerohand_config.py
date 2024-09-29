@@ -205,7 +205,7 @@ class ZerohandRoughCfg( LeggedRobotCfg ):
         terminate_after_contacts_on = ['pelvis','torso','hip','knee','arm','shoulder']
         flip_visual_attachments = False
         self_collisions = 1 # 1 to disable, 0 to enable...bitwise filter
-        default_dof_drive_mode = 3 # see GymDofDriveModeFlags (0 is none, 1 is pos tgt, 2 is vel tgt, 3 effort)
+        default_dof_drive_mode = 1 # see GymDofDriveModeFlags (0 is none, 1 is pos tgt, 2 is vel tgt, 3 effort)
   
     class rewards( LeggedRobotCfg.rewards ):
         soft_dof_pos_limit = 0.95

@@ -26,7 +26,7 @@ class ZeroHand_IK:
         self.robot = pin.RobotWrapper.BuildFromURDF(
             urdf_file,
             urdf_path,
-            verbose=True
+            # verbose=True
             )
         self.mixed_jointsToLockIDs = [
                                     #在解算过程中需要忽略/锁定（lock）的关节列表
@@ -220,32 +220,33 @@ class ZeroHand_IK:
             # return sol_q, '',False
             return sol_q,False
 
+if __name__ == "__main__":
 
-#单独测试ik时启用以下代码
-zerohandIK = ZeroHand_IK()
-left_pose = np.eye(4)
-right_pose = np.eye(4)
-left_pose[0:3,3] = np.array([0.0,0.2565,-0.3])
-left_pose = np.array([[ 0.69670671,  0.        ,  0.71735609, 0.],
-       [ 0.        ,  1.        ,  0.        ,0.267],
-       [-0.71735609,  0.        ,  0.69670671,-0.25],[0,0,0,1]])
+    #单独测试ik时启用以下代码
+    zerohandIK = ZeroHand_IK()
+    left_pose = np.eye(4)
+    right_pose = np.eye(4)
+    left_pose[0:3,3] = np.array([0.0,0.2565,-0.3])
+    left_pose = np.array([[ 0.69670671,  0.        ,  0.71735609, 0.],
+        [ 0.        ,  1.        ,  0.        ,0.267],
+        [-0.71735609,  0.        ,  0.69670671,-0.25],[0,0,0,1]])
 
 
-right_pose[0:3,3] = np.array([0.0,-0.2565,-0.3])
+    right_pose[0:3,3] = np.array([0.0,-0.2565,-0.3])
 
-sol_q, flag = zerohandIK.ik_fun(left_pose, right_pose)
-T_L,T_R = zerohandIK.fk_fun(sol_q)
-print("sol_q: ",sol_q)
-print("T_L: ", T_L)      
-print("T_R: ", T_R)
+    sol_q, flag = zerohandIK.ik_fun(left_pose, right_pose)
+    T_L,T_R = zerohandIK.fk_fun(sol_q)
+    print("sol_q: ",sol_q)
+    print("T_L: ", T_L)      
+    print("T_R: ", T_R)
 
-# sol_q, tau_ff,flag = zerohandIK.ik_fun(left_pose, right_pose)
-# t1 = time.time()
-# num = 100
-# for i in range(num):
-#     sol_q, flag = zerohandIK.ik_fun(left_pose, right_pose)
+    # sol_q, tau_ff,flag = zerohandIK.ik_fun(left_pose, right_pose)
+    # t1 = time.time()
+    # num = 100
+    # for i in range(num):
+    #     sol_q, flag = zerohandIK.ik_fun(left_pose, right_pose)
 
-# print("use time: ", (time.time() - t1)/num)
-# print("sol_q: ",sol_q)
-# print("tau_ff: ",tau_ff)
+    # print("use time: ", (time.time() - t1)/num)
+    # print("sol_q: ",sol_q)
+    # print("tau_ff: ",tau_ff)
 
